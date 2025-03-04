@@ -10,17 +10,17 @@ namespace Chess
         public Cavalo(string cor, int linha, int coluna, string imagem) : base(cor, linha, coluna, imagem) { }
 
         public override bool MovimentoValido(int linhaDestino, int colunaDestino, Peca[,] tabuleiro)
-{
-    int diffLinha = Math.Abs(linhaDestino - Linha);
-    int diffColuna = Math.Abs(colunaDestino - Coluna);
+        {
+            int diffLinha = Math.Abs(linhaDestino - Linha);
+            int diffColuna = Math.Abs(colunaDestino - Coluna);
 
-    // Movimento em "L"
-    if ((diffLinha == 2 && diffColuna == 1) || (diffLinha == 1 && diffColuna == 2))
-    {
-        return PodeCapturar(linhaDestino, colunaDestino, tabuleiro);
-    }
+            // Movimento em "L"
+            if ((diffLinha == 2 && diffColuna == 1) || (diffLinha == 1 && diffColuna == 2))
+            {
+                return PodeCapturar(linhaDestino, colunaDestino, tabuleiro); // Verifica se pode capturar
+            }
 
-    return false;
-}
+            return false;
+        }
     }
 }

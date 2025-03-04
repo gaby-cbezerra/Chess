@@ -72,12 +72,7 @@ namespace Chess
             if (pecaSelecionada.MovimentoValido(posicaoDestino.X, posicaoDestino.Y, tabuleiro.Pecas))
             {
                 // Move a peça no tabuleiro
-                tabuleiro.Pecas[pecaSelecionada.Linha, pecaSelecionada.Coluna] = null;
-                tabuleiro.Pecas[posicaoDestino.X, posicaoDestino.Y] = pecaSelecionada;
-
-                // Atualiza a posição da peça
-                pecaSelecionada.Linha = posicaoDestino.X;
-                pecaSelecionada.Coluna = posicaoDestino.Y;
+                tabuleiro.MoverPeca(pecaSelecionada.Linha, pecaSelecionada.Coluna, posicaoDestino.X, posicaoDestino.Y);
 
                 // Remove a peça da casa anterior
                 casaSelecionada.Controls.Clear();

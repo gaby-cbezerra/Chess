@@ -15,23 +15,28 @@ namespace Chess
             int linhaInicial = Cor == "branco" ? 1 : 6;
 
             // Movimento para frente
-            if (colunaDestino == Coluna && tabuleiro[linhaDestino, colunaDestino] == null)
+            if (colunaDestino == Coluna)
             {
-                if (linhaDestino == Linha + direcao)
+                // Verifica se a casa de destino está vazia (é uma CasaVazia)
+                if (tabuleiro[linhaDestino, colunaDestino] is CasaVazia)
                 {
-                    return true;
-                }
-                if (Linha == linhaInicial && linhaDestino == Linha + 2 * direcao && tabuleiro[Linha + direcao, Coluna] == null)
-                {
-                    return true;
+                    if (linhaDestino == Linha + direcao)
+                    {
+                        return true;
+                    }
+                    if (Linha == linhaInicial && linhaDestino == Linha + 2 * direcao && tabuleiro[Linha + direcao, Coluna] is CasaVazia)
+                    {
+                        return true;
+                    }
                 }
             }
 
-            // Captura
+            // Captura (movimento diagonal)
             if (Math.Abs(colunaDestino - Coluna) == 1 && linhaDestino == Linha + direcao)
             {
                 Peca pecaDestino = tabuleiro[linhaDestino, colunaDestino];
-                if (pecaDestino != null && pecaDestino.Cor != Cor)
+                // Verifica se a casa de destino contém uma peça adversária (não é CasaVazia e a cor é diferente)
+                if (!(pecaDestino is CasaVazia) && pecaDestino.Cor != Cor)
                 {
                     return true;
                 }

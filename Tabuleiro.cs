@@ -17,6 +17,15 @@ namespace Chess
 
         private void InicializarTabuleiro()
         {
+
+            for (int linha = 0; linha < 8; linha++)
+            {
+                for (int coluna = 0; coluna < 8; coluna++)
+                {
+                    // Inicializa todas as casas como CasaVazia
+                     Pecas[linha, coluna] = new CasaVazia(linha, coluna);
+                }
+            }
             // Peões
             for (int coluna = 0; coluna < 8; coluna++)
             {
@@ -58,15 +67,15 @@ namespace Chess
             if (peca != null && peca.MovimentoValido(linhaDestino, colunaDestino, Pecas))
             {
                 // Verifica se há uma peça adversária na casa de destino
-                if (Pecas[linhaDestino, colunaDestino] != null && Pecas[linhaDestino, colunaDestino].Cor != peca.Cor)
+                if (!(Pecas[linhaDestino, colunaDestino] is CasaVazia) && Pecas[linhaDestino, colunaDestino].Cor != peca.Cor)
                 {
                     // Remove a peça adversária (captura)
-                    Pecas[linhaDestino, colunaDestino] = null;
+                    Pecas[linhaDestino, colunaDestino] = new CasaVazia(linhaDestino, colunaDestino);
                 }
 
                 // Move a peça para o destino
                 Pecas[linhaDestino, colunaDestino] = peca;
-                Pecas[linhaOrigem, colunaOrigem] = null;
+                Pecas[linhaOrigem, colunaOrigem] = new CasaVazia(linhaOrigem, colunaOrigem);
 
                 // Atualiza a posição da peça
                 peca.Linha = linhaDestino;

@@ -23,10 +23,10 @@ namespace Chess
         public abstract bool MovimentoValido(int linhaDestino, int colunaDestino, Peca[,] tabuleiro);
 
         // Método auxiliar para verificar se pode capturar
-        protected bool PodeCapturar(int linhaDestino, int colunaDestino, Peca[,] tabuleiro)
+       protected bool PodeCapturar(int linhaDestino, int colunaDestino, Peca[,] tabuleiro)
         {
             Peca pecaDestino = tabuleiro[linhaDestino, colunaDestino];
-            return pecaDestino == null || pecaDestino.Cor != this.Cor;  // Casa vazia ou peça adversária
+            return pecaDestino is CasaVazia || pecaDestino.Cor != this.Cor; // Casa vazia ou peça adversária
         }
     }
 }

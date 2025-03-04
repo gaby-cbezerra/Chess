@@ -11,7 +11,7 @@ namespace Chess
 
         public override bool MovimentoValido(int linhaDestino, int colunaDestino, Peca[,] tabuleiro)
         {
-            // Movimento na diagonal
+            // Verifica se o movimento é na diagonal
             if (Math.Abs(linhaDestino - Linha) == Math.Abs(colunaDestino - Coluna))
             {
                 int passoLinha = linhaDestino > Linha ? 1 : -1;
@@ -20,21 +20,25 @@ namespace Chess
                 int linhaAtual = Linha + passoLinha;
                 int colunaAtual = Coluna + passoColuna;
 
+                // Percorre o caminho até o destino
                 while (linhaAtual != linhaDestino || colunaAtual != colunaDestino)
                 {
-                    if (tabuleiro[linhaAtual, colunaAtual] != null)
+                    // Verifica se há uma peça bloqueando o caminho
+                    if (!(tabuleiro[linhaAtual, colunaAtual] is CasaVazia))
+                    {
                         return false; // Peça bloqueando o caminho
+                    }
 
                     linhaAtual += passoLinha;
                     colunaAtual += passoColuna;
                 }
 
-                // Verifica se a casa de destino está vazia ou tem uma peça adversária
-                Peca pecaDestino = tabuleiro[linhaDestino, colunaDestino];
-                return pecaDestino == null || pecaDestino.Cor != Cor;
+                // Verifica se a casa de destino está vazia ou contém uma peça adversária
+                return PodeCapturar(linhaDestino, colunaDestino, tabuleiro);
             }
 
-            return false;
+            return false; // Movimento inválido (não é na diagonal)
         }
+      
     }
 }
