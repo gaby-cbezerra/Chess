@@ -62,25 +62,53 @@ namespace Chess
             casaSelecionada = pictureBox.Parent as Panel;
         }
 
-        private void Casa_Click(object sender, EventArgs e)
+      private void Casa_Click(object sender, EventArgs e)
         {
             if (pecaSelecionada == null) return;
 
             Panel casaDestino = sender as Panel;
             Point posicaoDestino = (Point)casaDestino.Tag;
 
+            // Mensagem de debug: Tentativa de movimento
+            MessageBox.Show($"Tentando mover {pecaSelecionada.GetType().Name} de ({pecaSelecionada.Linha}, {pecaSelecionada.Coluna}) para ({posicaoDestino.X}, {posicaoDestino.Y})", "Debug - Movimento");
+
+            // Verifica se o movimento é válido
             if (pecaSelecionada.MovimentoValido(posicaoDestino.X, posicaoDestino.Y, tabuleiro.Pecas))
             {
-                // Move a peça no tabuleiro
-                tabuleiro.MoverPeca(pecaSelecionada.Linha, pecaSelecionada.Coluna, posicaoDestino.X, posicaoDestino.Y);
+                // Mensagem de debug: Movimento válido
+                MessageBox.Show($"Movimento válido para {pecaSelecionada.GetType().Name} em ({posicaoDestino.X}, {posicaoDestino.Y})", "Debug - Movimento Válido");
 
-                // Remove a peça da casa anterior
+                // Verifica se há uma peça adversária na casa de destino
+                Peca pecaDestino = tabuleiro.Pecas[posicaoDestino.X, posicaoDestino.Y];
+                if (pecaDestino is not CasaVazia && pecaDestino.Cor != pecaSelecionada.Cor)
+                {
+                    // Mensagem de debug: Captura possível
+                    MessageBox.Show($"Captura possível: {pecaSelecionada.GetType().Name} pode capturar {pecaDestino.GetType().Name} em ({posicaoDestino.X}, {posicaoDestino.Y})", "Debug - Captura Possível");
+
+                    // Remove a peça adversária do tabuleiro lógico
+                    tabuleiro.Pecas[posicaoDestino.X, posicaoDestino.Y] = new CasaVazia(posicaoDestino.X, posicaoDestino.Y);
+
+                    // Remove a peça adversária da interface gráfica
+                    casaDestino.Controls.Clear();
+
+                    // Mensagem de debug: Captura bem-sucedida
+                    MessageBox.Show($"Captura bem-sucedida: {pecaSelecionada.GetType().Name} capturou {pecaDestino.GetType().Name} em ({posicaoDestino.X}, {posicaoDestino.Y})", "Debug - Captura Bem-Sucedida");
+                }
+
+                // Remove a peça da casa de origem no tabuleiro lógico
+                tabuleiro.Pecas[pecaSelecionada.Linha, pecaSelecionada.Coluna] = new CasaVazia(pecaSelecionada.Linha, pecaSelecionada.Coluna);
+
+                // Move a peça para a casa de destino no tabuleiro lógico
+                tabuleiro.Pecas[posicaoDestino.X, posicaoDestino.Y] = pecaSelecionada;
+
+                // Atualiza a posição da peça
+                pecaSelecionada.Linha = posicaoDestino.X;
+                pecaSelecionada.Coluna = posicaoDestino.Y;
+
+                // Remove a peça da casa de origem na interface gráfica
                 casaSelecionada.Controls.Clear();
 
-                // Remove a peça da casa de destino, se houver
-                casaDestino.Controls.Clear();
-
-                // Adiciona a peça na nova casa
+                // Adiciona a peça na casa de destino na interface gráfica
                 PictureBox pictureBox = new PictureBox
                 {
                     Width = TamanhoCelula,
@@ -93,9 +121,17 @@ namespace Chess
                 pictureBox.Click += new EventHandler(Peca_Click);
                 casaDestino.Controls.Add(pictureBox);
 
+                // Mensagem de debug: Peça movida
+                MessageBox.Show($"Peça {pecaSelecionada.GetType().Name} movida para ({posicaoDestino.X}, {posicaoDestino.Y})", "Debug - Peça Movida");
+
                 // Limpa a seleção
                 pecaSelecionada = null;
                 casaSelecionada = null;
+            }
+            else
+            {
+                // Mensagem de debug: Movimento inválido
+                MessageBox.Show($"Movimento inválido para {pecaSelecionada.GetType().Name} em ({posicaoDestino.X}, {posicaoDestino.Y})", "Debug - Movimento Inválido");
             }
         }
     }

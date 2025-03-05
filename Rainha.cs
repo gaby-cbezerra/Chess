@@ -22,15 +22,14 @@ namespace Chess
 
                 while (linhaAtual != linhaDestino || colunaAtual != colunaDestino)
                 {
-                    if (tabuleiro[linhaAtual, colunaAtual] != null)
+                    if (!(tabuleiro[linhaAtual, colunaAtual] is CasaVazia))
                         return false; // Peça bloqueando o caminho
 
                     linhaAtual += passoLinha;
                     colunaAtual += passoColuna;
                 }
 
-                // Verifica se pode capturar a peça adversária no destino
-                return PodeCapturar(linhaDestino, colunaDestino, tabuleiro);
+                return PodeCapturar(linhaDestino, colunaDestino, tabuleiro); // Verifica se pode capturar
             }
 
             // Verifica se o movimento é diagonal (movimento do bispo)
@@ -44,15 +43,14 @@ namespace Chess
 
                 while (linhaAtual != linhaDestino || colunaAtual != colunaDestino)
                 {
-                    if (tabuleiro[linhaAtual, colunaAtual] != null)
+                    if (!(tabuleiro[linhaAtual, colunaAtual] is CasaVazia))
                         return false; // Peça bloqueando o caminho
 
                     linhaAtual += passoLinha;
                     colunaAtual += passoColuna;
                 }
 
-                // Verifica se pode capturar a peça adversária no destino
-                return PodeCapturar(linhaDestino, colunaDestino, tabuleiro);
+                return PodeCapturar(linhaDestino, colunaDestino, tabuleiro); // Verifica se pode capturar
             }
 
             return false;
